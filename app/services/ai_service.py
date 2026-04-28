@@ -8,7 +8,9 @@ def _chat(prompt: str) -> str:
         f"{Config.LLM_BASE_URL}/llm/chat",
         json={
             "token": Config.LLM_TOKEN,
-            "chat": prompt
+            "chat": prompt,
+            "max_tokens": 500,    # ← tambah ini
+            "credit": 500         # ← coba tambah ini
         },
         timeout=60,
     )
@@ -17,39 +19,31 @@ def _chat(prompt: str) -> str:
     print("RESPONSE:", response.text)
 
     if response.status_code != 200:
-        raise Exception(f"LLM request failed: {response.text}")
+        raise Exception(f"LLM error: {response.text}")
 
     data = response.json()
-    # Sesuaikan key response dengan yang dikembalikan delcom
-    return data.get("data", data.get("message", str(data)))
-
+    return data.get("data", str(data))
 
 def analisis_kelas():
     data = get_all()
     stats = get_statistik()
 
     ringkasan = "\n".join([
-        f"- {m['nama']} (NIM: {m['nim']}): UTS={m['nilai_uts']}, "
-        f"UAS={m['nilai_uas']}, Tugas={m['nilai_tugas']}, "
-        f"Akhir={m['nilai_akhir']}, Grade={m['grade']}"
+        f"- {m['nama']}: Akhir={m['nilai_akhir']}, Grade={m['grade']}"
         for m in data
     ])
 
-    prompt = f"""Kamu adalah asisten analisis akademik. Berikut data nilai mahasiswa mata kuliah Pemrograman Mobile:
+    prompt = f"""Analisis nilai mahasiswa Pemrograman Mobile:
 
 {ringkasan}
 
-Statistik:
-- Total: {stats['total_mahasiswa']} mahasiswa
-- Rata-rata: {stats['rata_rata']}
-- Lulus: {stats['lulus']}, Tidak Lulus: {stats['tidak_lulus']}
+Rata-rata: {stats['rata_rata']}, Lulus: {stats['lulus']}/{stats['total_mahasiswa']}
 
-Berikan analisis dalam Bahasa Indonesia yang mencakup:
-1. Ringkasan Performa Kelas
-2. Identifikasi Mahasiswa Bermasalah
-3. Mahasiswa Berprestasi
-4. Pola yang Ditemukan
-5. Rekomendasi Tindakan untuk Dosen"""
+Berikan analisis singkat:
+1. Ringkasan kelas
+2. Mahasiswa bermasalah
+3. Mahasiswa berprestasi
+4. Rekomendasi untuk dosen"""
 
     return _chat(prompt)
 
@@ -60,17 +54,13 @@ def rekomendasi_mahasiswa(nim: str):
     if not m:
         return None, "Mahasiswa tidak ditemukan"
 
-    prompt = f"""Kamu adalah konselor akademik. Berikan rekomendasi personal dalam Bahasa Indonesia untuk:
+    prompt = f"""Rekomendasi untuk {m['nama']} (Grade {m['grade']}, Nilai {m['nilai_akhir']}):
+UTS={m['nilai_uts']}, UAS={m['nilai_uas']}, Tugas={m['nilai_tugas']}
 
-Nama: {m['nama']} | NIM: {m['nim']}
-UTS: {m['nilai_uts']} | UAS: {m['nilai_uas']} | Tugas: {m['nilai_tugas']}
-Nilai Akhir: {m['nilai_akhir']} | Grade: {m['grade']}
-
-Berikan:
-1. Penilaian Singkat
+Berikan rekomendasi singkat:
+1. Penilaian
 2. Kekuatan
-3. Area Perbaikan
-4. 3 Tips Belajar Konkret
-5. Target Realistis Semester Depan"""
+3. Area perbaikan
+4. Tips belajar"""
 
     return m, _chat(prompt)

@@ -26,15 +26,18 @@ class _AiRekomendasiScreenState extends State<AiRekomendasiScreen> {
   }
 
   Future<void> _get() async {
+    if (!mounted) return;
     setState(() { _loading = true; _error = null; _hasil = null; });
     try {
       final res = await ApiService.getAiRekomendasi(widget.mahasiswa['nim']);
+      if (!mounted) return;  // ← tambah ini
       if (res['statusCode'] == 200) {
         setState(() { _hasil = res['rekomendasi']; _loading = false; });
       } else {
         setState(() { _error = 'Gagal'; _loading = false; });
       }
     } catch (e) {
+      if (!mounted) return;  // ← tambah ini
       setState(() { _error = 'Koneksi gagal: $e'; _loading = false; });
     }
   }

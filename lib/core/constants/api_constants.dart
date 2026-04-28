@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = 'http://delcom.org:31188';
+  static const String baseUrl = 'http://localhost:5000';
 
   static const String motivations = '$baseUrl/motivations';
   static const String generate = '$baseUrl/motivations/generate';

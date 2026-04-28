@@ -11,15 +11,7 @@ def analisis():
         hasil = analisis_kelas()
         return jsonify({"analisis": hasil, "status": "success"})
     except Exception as e:
+        print("ERROR ANALISIS:", str(e))  # ← tambah ini
+        import traceback
+        traceback.print_exc()             # ← tambah ini
         return jsonify({"analisis": str(e), "status": "error"}), 500
-
-@ai_bp.route("/rekomendasi/<nim>", methods=["GET"])
-@require_auth
-def rekomendasi(nim):
-    try:
-        mahasiswa, hasil = rekomendasi_mahasiswa(nim)
-        if not mahasiswa:
-            return jsonify({"error": hasil}), 404
-        return jsonify({"mahasiswa": mahasiswa, "rekomendasi": hasil, "status": "success"})
-    except Exception as e:
-        return jsonify({"rekomendasi": str(e), "status": "error"}), 500
