@@ -1,31 +1,27 @@
 import requests
-from flask import current_app
+from app.config import Config
 from app.services.mahasiswa_service import get_all, get_statistik
 
-def _chat(prompt: str, max_tokens: int = 1500) -> str:
-    """Kirim prompt ke LLM API delcom.org"""
-    base_url = current_app.config["LLM_BASE_URL"]
-    token = current_app.config["LLM_TOKEN"]
 
+def _chat(prompt: str) -> str:
     response = requests.post(
-        f"{base_url}/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
-        },
+        f"{Config.LLM_BASE_URL}/llm/chat",
         json={
-            "model": "gpt-4o-mini",  # sesuaikan dengan model yang tersedia di delcom
-            "max_tokens": max_tokens,
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
+            "token": Config.LLM_TOKEN,
+            "chat": prompt
         },
         timeout=60,
     )
 
-    response.raise_for_status()
+    print("STATUS:", response.status_code)
+    print("RESPONSE:", response.text)
+
+    if response.status_code != 200:
+        raise Exception(f"LLM request failed: {response.text}")
+
     data = response.json()
-    return data["choices"][0]["message"]["content"]
+    # Sesuaikan key response dengan yang dikembalikan delcom
+    return data.get("data", data.get("message", str(data)))
 
 
 def analisis_kelas():
@@ -49,13 +45,13 @@ Statistik:
 - Lulus: {stats['lulus']}, Tidak Lulus: {stats['tidak_lulus']}
 
 Berikan analisis dalam Bahasa Indonesia yang mencakup:
-1. **Ringkasan Performa Kelas**
-2. **Identifikasi Mahasiswa Bermasalah**
-3. **Mahasiswa Berprestasi**
-4. **Pola yang Ditemukan**
-5. **Rekomendasi Tindakan untuk Dosen**"""
+1. Ringkasan Performa Kelas
+2. Identifikasi Mahasiswa Bermasalah
+3. Mahasiswa Berprestasi
+4. Pola yang Ditemukan
+5. Rekomendasi Tindakan untuk Dosen"""
 
-    return _chat(prompt, max_tokens=1500)
+    return _chat(prompt)
 
 
 def rekomendasi_mahasiswa(nim: str):
@@ -71,10 +67,10 @@ UTS: {m['nilai_uts']} | UAS: {m['nilai_uas']} | Tugas: {m['nilai_tugas']}
 Nilai Akhir: {m['nilai_akhir']} | Grade: {m['grade']}
 
 Berikan:
-1. **Penilaian Singkat**
-2. **Kekuatan**
-3. **Area Perbaikan**
-4. **3 Tips Belajar Konkret**
-5. **Target Realistis Semester Depan**"""
+1. Penilaian Singkat
+2. Kekuatan
+3. Area Perbaikan
+4. 3 Tips Belajar Konkret
+5. Target Realistis Semester Depan"""
 
-    return m, _chat(prompt, max_tokens=800)
+    return m, _chat(prompt)

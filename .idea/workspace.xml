@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f0ceb17-dd4d-4f5d-a040-dffb427753e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/core/constants/constants.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_graph.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_graph.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/272c55e27009ccc2ac00e4dda81e4589/.filecache" beforeDir="false" afterPath="$PROJECT_DIR$/build/272c55e27009ccc2ac00e4dda81e4589/.filecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/272c55e27009ccc2ac00e4dda81e4589/dart_build_result.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/272c55e27009ccc2ac00e4dda81e4589/dart_build_result.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/flutter_assets/NOTICES" beforeDir="false" afterPath="$PROJECT_DIR$/build/flutter_assets/NOTICES" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/constants/api_constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/constants/api_constants.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/services/ api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/services/api_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/ai_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/ai_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
