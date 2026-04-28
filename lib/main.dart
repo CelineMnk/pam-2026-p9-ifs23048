@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'core/theme.dart';
+import 'core/theme/app_theme.dart';
 import 'providers/auth_provider.dart';
 import 'providers/motivation_provider.dart';
 import 'features/auth/login_screen.dart';

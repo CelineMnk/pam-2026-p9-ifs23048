@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants.dart';
+import '../../core/constants/api_constants.dart';
 
 class ApiService {
   static Future<String?> getToken() async {
@@ -30,7 +30,7 @@ class ApiService {
   // ── AUTH ──────────────────────────────────────────────────
   static Future<Map<String, dynamic>> login(String username, String password) async {
     final res = await http.post(
-      Uri.parse('${AppConstants.baseUrl}/api/auth/login'),
+      Uri.parse(ApiConstants.login),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'username': username, 'password': password}),
     );
@@ -53,7 +53,7 @@ class ApiService {
   // ── MAHASISWA ─────────────────────────────────────────────
   static Future<Map<String, dynamic>> getMahasiswa() async {
     final res = await http.get(
-      Uri.parse('${AppConstants.baseUrl}/api/mahasiswa/'),
+      Uri.parse(ApiConstants.mahasiswa),
       headers: await _authHeaders(),
     );
     return {'statusCode': res.statusCode, ...jsonDecode(res.body)};
@@ -61,7 +61,7 @@ class ApiService {
 
   static Future<Map<String, dynamic>> getStatistik() async {
     final res = await http.get(
-      Uri.parse('${AppConstants.baseUrl}/api/mahasiswa/statistik'),
+      Uri.parse(ApiConstants.statistik),
       headers: await _authHeaders(),
     );
     return {'statusCode': res.statusCode, ...jsonDecode(res.body)};
@@ -70,7 +70,7 @@ class ApiService {
   // ── AI ────────────────────────────────────────────────────
   static Future<Map<String, dynamic>> getAiAnalisis() async {
     final res = await http.post(
-      Uri.parse('${AppConstants.baseUrl}/api/ai/analisis'),
+      Uri.parse(ApiConstants.aiAnalisis),
       headers: await _authHeaders(),
     );
     return {'statusCode': res.statusCode, ...jsonDecode(res.body)};
@@ -78,7 +78,7 @@ class ApiService {
 
   static Future<Map<String, dynamic>> getAiRekomendasi(String nim) async {
     final res = await http.get(
-      Uri.parse('${AppConstants.baseUrl}/api/ai/rekomendasi/$nim'),
+      Uri.parse(ApiConstants.aiRekomendasi(nim)),
       headers: await _authHeaders(),
     );
     return {'statusCode': res.statusCode, ...jsonDecode(res.body)};
